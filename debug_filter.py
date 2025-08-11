@@ -1,4 +1,3 @@
-# debug_filter.py
 import os
 
 from dotenv import load_dotenv
