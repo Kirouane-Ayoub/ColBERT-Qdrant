@@ -3,7 +3,7 @@ import logging
 import time
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-
+from qdrant_client.models import FilterSelector, Filter
 from app.models.schemas import (
     EmbedRequest,
     EmbedResponse,
@@ -66,7 +66,9 @@ async def embed_texts(
 
     except Exception as e:
         logger.error(f"Embedding failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Embedding failed: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Embedding failed: {str(e)}"
+        ) from e
 
 
 @router.post("/index", response_model=IndexResponse)
@@ -99,7 +101,7 @@ async def index_documents(
 
     except Exception as e:
         logger.error(f"Indexing failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Indexing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Indexing failed: {str(e)}") from e
 
 
 @router.post("/search", response_model=SearchResponse)
@@ -132,7 +134,7 @@ async def search_documents(
 
     except Exception as e:
         logger.error(f"Search failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}") from e
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -198,7 +200,7 @@ async def delete_collection(
         logger.error(f"Failed to delete collection '{collection_name}': {e}")
         raise HTTPException(
             status_code=500, detail=f"Failed to delete collection: {str(e)}"
-        )
+        ) from e
 
 
 @router.delete("/collections/{collection_name}/points")
@@ -210,7 +212,6 @@ async def clear_collection_points(
         await qdrant_svc.initialize()
 
     try:
-        from qdrant_client.models import FilterSelector, Filter
 
         loop = asyncio.get_event_loop()
 
