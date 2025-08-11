@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+fastembed
+qdrant-client
+pydantic
+pydantic-settings
+python-multipart
+httpx
+structlog
+python-json-logger
