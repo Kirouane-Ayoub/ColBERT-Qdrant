@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import time
-from typing import List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 from fastembed import LateInteractionTextEmbedding
@@ -33,8 +33,8 @@ class EmbeddingService:
                 logger.info(f"Model loaded in {load_time:.2f}s")
 
     async def embed_documents(
-        self, texts: List[str]
-    ) -> Tuple[List[np.ndarray], List[Tuple[int, int]]]:
+        self, texts: list[str]
+    ) -> tuple[list[np.ndarray], list[tuple[int, int]]]:
         """Embed documents and return multivectors with shapes."""
         if not self._model:
             await self.initialize()
@@ -60,8 +60,8 @@ class EmbeddingService:
         return all_embeddings, all_shapes
 
     async def embed_queries(
-        self, texts: List[str]
-    ) -> Tuple[List[np.ndarray], List[Tuple[int, int]]]:
+        self, texts: list[str]
+    ) -> tuple[list[np.ndarray], list[tuple[int, int]]]:
         """Embed queries and return multivectors with shapes."""
         if not self._model:
             await self.initialize()

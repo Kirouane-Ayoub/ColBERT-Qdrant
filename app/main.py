@@ -127,5 +127,5 @@ if __name__ == "__main__":
         port=settings.PORT,
         workers=settings.WORKERS,
         log_level=settings.LOG_LEVEL,
-        reload=False,  # Set to True for development
+        reload=True,  # Set to True for development
     )

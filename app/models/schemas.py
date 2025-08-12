@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import BaseModel, Field, validator
 
@@ -10,7 +10,7 @@ class EmbeddingType(str, Enum):
 
 
 class EmbedRequest(BaseModel):
-    texts: List[str] = Field(..., min_items=1, max_items=100)
+    texts: list[str] = Field(..., min_items=1, max_items=100)
     embedding_type: EmbeddingType = EmbeddingType.DOCUMENT
     normalize: bool = False
 
@@ -22,17 +22,17 @@ class EmbedRequest(BaseModel):
 
 
 class EmbedResponse(BaseModel):
-    embeddings: List[List[List[float]]]  # List of multivectors
+    embeddings: list[list[list[float]]]  # list of multivectors
     model_name: str
     embedding_type: str
-    shapes: List[List[int]]  # Shape of each multivector [num_tokens, dim]
+    shapes: list[list[int]]  # Shape of each multivector [num_tokens, dim]
 
 
 class IndexRequest(BaseModel):
     collection_name: str = Field(..., min_length=1)
-    documents: List[str] = Field(..., min_items=1, max_items=1000)
-    metadata: Optional[List[Dict[str, Any]]] = None
-    ids: Optional[List[str]] = None
+    documents: list[str] = Field(..., min_items=1, max_items=1000)
+    metadata: Optional[list[dict[str, Any]]] = None
+    ids: Optional[list[str]] = None
 
 
 class IndexResponse(BaseModel):
@@ -44,12 +44,12 @@ class IndexResponse(BaseModel):
 class SearchResult(BaseModel):
     id: str
     score: float
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     text: Optional[str] = None
 
 
 class SearchResponse(BaseModel):
-    results: List[SearchResult]
+    results: list[SearchResult]
     query: str
     total_results: int
     search_time_ms: float
@@ -65,15 +65,15 @@ class HealthResponse(BaseModel):
 
 class FilterCondition(BaseModel):
     key: str
-    match: Optional[Dict[str, Any]] = None
-    range: Optional[Dict[str, Any]] = None
-    geo_radius: Optional[Dict[str, Any]] = None
+    match: Optional[dict[str, Any]] = None
+    range: Optional[dict[str, Any]] = None
+    geo_radius: Optional[dict[str, Any]] = None
 
 
 class SearchFilter(BaseModel):
-    must: Optional[List[Union[FilterCondition, Dict[str, Any]]]] = None
-    should: Optional[List[FilterCondition]] = None
-    must_not: Optional[List[FilterCondition]] = None
+    must: Optional[list[Union[FilterCondition, dict[str, Any]]]] = None
+    should: Optional[list[FilterCondition]] = None
+    must_not: Optional[list[FilterCondition]] = None
 
 
 class SearchRequest(BaseModel):
@@ -81,4 +81,4 @@ class SearchRequest(BaseModel):
     query: str = Field(..., min_length=1)
     limit: int = Field(default=10, ge=1, le=100)
     score_threshold: Optional[float] = Field(default=None, ge=0.0, le=1.0)
-    filter: Optional[Dict[str, Any]] = None
+    filter: Optional[dict[str, Any]] = None

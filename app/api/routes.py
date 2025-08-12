@@ -3,7 +3,8 @@ import logging
 import time
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from qdrant_client.models import FilterSelector, Filter
+from qdrant_client.models import Filter, FilterSelector
+
 from app.models.schemas import (
     EmbedRequest,
     EmbedResponse,

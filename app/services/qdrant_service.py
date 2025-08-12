@@ -2,7 +2,7 @@ import asyncio
 import logging
 import time
 import uuid
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 from qdrant_client import QdrantClient, models
@@ -113,7 +113,7 @@ class QdrantService:
                     f"Index creation for '{field_name}' failed (might already exist): {e}"
                 )
 
-    def _prepare_multivector(self, embedding: np.ndarray) -> List[List[float]]:
+    def _prepare_multivector(self, embedding: np.ndarray) -> list[list[float]]:
         """Convert numpy multivector to the format expected by Qdrant."""
         if embedding.ndim == 1:
             return [embedding.astype(float).tolist()]
@@ -123,7 +123,7 @@ class QdrantService:
             raise ValueError(f"Unsupported embedding dimension: {embedding.ndim}")
 
     def _convert_filter_dict_to_models(
-        self, filter_input: Union[Dict[str, Any], Any]
+        self, filter_input: Union[dict[str, Any], Any]
     ) -> models.Filter:
         """Convert dictionary or Pydantic filter to Qdrant Filter models."""
 
@@ -154,7 +154,7 @@ class QdrantService:
             filter_dict = filter_input
             logger.info(f"Using dict as-is: {filter_dict}")
 
-        def convert_condition(condition: Dict[str, Any]) -> models.FieldCondition:
+        def convert_condition(condition: dict[str, Any]) -> models.FieldCondition:
             key = condition["key"]
             logger.info(f"Converting condition for key: {key}")
 
@@ -223,11 +223,11 @@ class QdrantService:
     async def index_documents(
         self,
         collection_name: str,
-        embeddings: List[np.ndarray],
-        texts: List[str],
-        metadata: Optional[List[Dict[str, Any]]] = None,
-        ids: Optional[List[str]] = None,
-    ) -> Tuple[bool, int]:
+        embeddings: list[np.ndarray],
+        texts: list[str],
+        metadata: Optional[list[dict[str, Any]]] = None,
+        ids: Optional[list[str]] = None,
+    ) -> tuple[bool, int]:
         """Index documents with their multivector embeddings."""
         if not self._client:
             await self.initialize()
@@ -301,8 +301,8 @@ class QdrantService:
         query_embedding: np.ndarray,
         limit: int = 10,
         score_threshold: Optional[float] = None,
-        filter_conditions: Optional[Dict[str, Any]] = None,
-    ) -> Tuple[List[Dict[str, Any]], float]:
+        filter_conditions: Optional[dict[str, Any]] = None,
+    ) -> tuple[list[dict[str, Any]], float]:
         """Search for similar documents using ColBERT query embedding with query_points."""
         if not self._client:
             await self.initialize()
@@ -385,14 +385,14 @@ class QdrantService:
         if not self._client:
             try:
                 await self.initialize()
-            except:
+            except Exception:
                 return False
 
         try:
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, self._client.get_collections)
             return True
-        except:
+        except Exception:
             return False
 
     @property
