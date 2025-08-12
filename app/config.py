@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # Qdrant config
     QDRANT_URL: str = os.getenv("QDRANT_URL", "http://localhost:6333")
-    QDRANT_API_KEY: Optional[str] = os.getenv("QDRANT_API_KEY", None)
+    QDRANT_API_KEY: Optional[str] = os.getenv("QDRANT_API", None)
     DEFAULT_COLLECTION: str = "colbert_embeddings"
     VECTOR_SIZE: int = 128
 
