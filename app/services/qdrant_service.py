@@ -67,6 +67,9 @@ class QdrantService:
                         multivector_config=models.MultiVectorConfig(
                             comparator=models.MultiVectorComparator.MAX_SIM
                         ),
+                        quantization_config=models.BinaryQuantization(
+                            binary=models.BinaryQuantizationConfig(always_ram=True),
+                        ),
                     ),
                 ),
             )
